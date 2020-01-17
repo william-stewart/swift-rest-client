@@ -11,28 +11,30 @@ import UIKit
 class ViewController: UIViewController {
     let apiBaseUrl = "https://williamstewart.dev/ios-api"
     let restClient = RestClient()
+    
+    //Test variables
+    let testUser1 = "ylinder"
+    let testBoardName = "alternate"
 
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        getMessageBoard()
-        getMessageByUser(user: "ylinder")
+        getAllMessages()
+        getMessageByUser(user: testUser1)
+        getMessageByBoard(boardName: testBoardName)
     }
 
-    //Gets all messages from all boards
-    func getMessageBoard() {
+    func getAllMessages() {
         guard let url = URL(string: apiBaseUrl + "/allmessages") else { return }
         
         restClient.makeRequest(toURL: url, withHttpMethod: .get) { (results) in
             if let data = results.data {
                 let decoder = JSONDecoder()
-                decoder.keyDecodingStrategy = .convertFromSnakeCase
                 guard let testData = try? decoder.decode(MessagesBoardData.self, from: data) else { return }
-                print("returned from all messages route")
-                print(testData.description)
+                print("returned from all messages route\n" + testData.description)
             }
             
-            print("\n\nHeaders:\n")
+            print("\n\nAll messages headers:\n")
             if let response = results.response {
                 for (key, value) in response.headers.allValues() {
                     print(key, value)
@@ -48,13 +50,31 @@ class ViewController: UIViewController {
         restClient.makeRequest(toURL: url, withHttpMethod: .get) { (results) in
             if let data = results.data {
                 let decoder = JSONDecoder()
-                decoder.keyDecodingStrategy = .convertFromSnakeCase
                 guard let testData = try? decoder.decode(MessagesBoardData.self, from: data) else { return }
-                print("returned from all messages route")
-                print(testData.description)
+                print("returned from message by user route\n" + testData.description)
             }
             
-            print("\n\nHeaders:\n")
+            print("\n\nUser route headers:\n")
+            if let response = results.response {
+                for (key, value) in response.headers.allValues() {
+                    print(key, value)
+                }
+            }
+        }
+    }
+    
+    func getMessageByBoard(boardName: String) {
+        let param = "/" + boardName
+        guard let url = URL(string: apiBaseUrl + "/board" + param) else { return }
+        
+        restClient.makeRequest(toURL: url, withHttpMethod: .get) { (results) in
+            if let data = results.data {
+                let decoder = JSONDecoder()
+                guard let testData = try? decoder.decode(MessagesBoardData.self, from: data) else { return }
+                print("returned from message by board route\n" + testData.description)
+            }
+            
+            print("\n\nBoard route headers:\n")
             if let response = results.response {
                 for (key, value) in response.headers.allValues() {
                     print(key, value)
