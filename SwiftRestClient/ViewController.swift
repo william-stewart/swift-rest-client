@@ -22,7 +22,7 @@ class ViewController: UIViewController {
         //getAllMessages()
         //getMessageByUser(user: testUser1)
         //getMessageByBoard(boardName: testBoardName)
-        addMessage()
+        addMessage(userId: "requestfromphone1",boardName: "main",messageTitle: "example post",message: "example message")
     }
 
     func getAllMessages() {
@@ -84,14 +84,15 @@ class ViewController: UIViewController {
         }
     }
     
-    func addMessage() {
+    func addMessage(userId: String, boardName: String, messageTitle: String, message: String) {
+        if (userId == "" || boardName == "" || messageTitle == "") { return }
         guard let url = URL(string: apiBaseUrl + "/addmsg") else { return }
         
         restClient.requestHttpHeaders.add(value: "application/json", forKey: "Content-Type")
-        restClient.httpBodyParameters.add(value: "fromiphoneapp", forKey: "userID")
-        restClient.httpBodyParameters.add(value: "Main", forKey: "boardName")
-        restClient.httpBodyParameters.add(value: "message from app 1", forKey: "messageTitle")
-        restClient.httpBodyParameters.add(value: "Description of message from app 1", forKey: "message")
+        restClient.httpBodyParameters.add(value: userId, forKey: "userID")
+        restClient.httpBodyParameters.add(value: boardName, forKey: "boardName")
+        restClient.httpBodyParameters.add(value: messageTitle, forKey: "messageTitle")
+        restClient.httpBodyParameters.add(value: message, forKey: "message")
         
         restClient.makeRequest(toURL: url, withHttpMethod: .post) { (results) in
             guard let response = results.response else { return }

@@ -16,7 +16,7 @@
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "87"
             endingLineNumber = "87"
-            landmarkName = "addMessage()"
+            landmarkName = "addMessage(userId:boardName:messageTitle:message:)"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
