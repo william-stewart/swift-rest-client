@@ -19,9 +19,10 @@ class ViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        getAllMessages()
-        getMessageByUser(user: testUser1)
-        getMessageByBoard(boardName: testBoardName)
+        //getAllMessages()
+        //getMessageByUser(user: testUser1)
+        //getMessageByBoard(boardName: testBoardName)
+        addMessage()
     }
 
     func getAllMessages() {
@@ -87,7 +88,7 @@ class ViewController: UIViewController {
         guard let url = URL(string: apiBaseUrl + "/addmsg") else { return }
         
         restClient.requestHttpHeaders.add(value: "application/json", forKey: "Content-Type")
-        restClient.httpBodyParameters.add(value: "xperez", forKey: "userID")
+        restClient.httpBodyParameters.add(value: "fromiphoneapp", forKey: "userID")
         restClient.httpBodyParameters.add(value: "Main", forKey: "boardName")
         restClient.httpBodyParameters.add(value: "message from app 1", forKey: "messageTitle")
         restClient.httpBodyParameters.add(value: "Description of message from app 1", forKey: "message")
