@@ -16,11 +16,34 @@ class ViewController: UIViewController {
         super.viewDidLoad()
         
         getMessageBoard()
+        getMessageByUser(user: "ylinder")
     }
 
     //Gets all messages from all boards
     func getMessageBoard() {
         guard let url = URL(string: apiBaseUrl + "/allmessages") else { return }
+        
+        restClient.makeRequest(toURL: url, withHttpMethod: .get) { (results) in
+            if let data = results.data {
+                let decoder = JSONDecoder()
+                decoder.keyDecodingStrategy = .convertFromSnakeCase
+                guard let testData = try? decoder.decode(MessagesBoardData.self, from: data) else { return }
+                print("returned from all messages route")
+                print(testData.description)
+            }
+            
+            print("\n\nHeaders:\n")
+            if let response = results.response {
+                for (key, value) in response.headers.allValues() {
+                    print(key, value)
+                }
+            }
+        }
+    }
+    
+    func getMessageByUser(user: String) {
+        let param = "/" + user
+        guard let url = URL(string: apiBaseUrl + "/msg" + param) else { return }
         
         restClient.makeRequest(toURL: url, withHttpMethod: .get) { (results) in
             if let data = results.data {
